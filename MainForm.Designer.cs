@@ -139,7 +139,6 @@
             this.textBox.TabIndex = 2;
             this.textBox.Text = "";
             this.textBox.TextChanged += new System.EventHandler(this.TextBox_TextChanged);
-            this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
             // 
             // MainForm
             // 

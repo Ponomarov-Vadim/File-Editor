@@ -153,8 +153,7 @@ namespace TextEditor
         }
 
         private void TextBox_TextChanged(object sender, EventArgs e) // Срабатывает при изменении текста в textBox
-        {            
-            
+        {   
             var currentSelStart = textBox.SelectionStart;
             var currentSelLength = textBox.SelectionLength;
             textBox.SelectAll();                                                         // Не является оптимальным решением
@@ -216,33 +215,5 @@ namespace TextEditor
             return s;
         }
 
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            //var currentSelStart = textBox.SelectionStart;
-            //var currentSelLength = textBox.SelectionLength;
-            //if (e.KeyCode == Keys.Back)
-            //{
-            //    textBox.Select(currentSelStart - 1, 1);
-            //    if (Convert.ToChar(textBox.SelectedText)=='"')
-            //    {
-            //        if (currentSelStart-2>=0)
-            //        {
-            //            textBox.Select(currentSelStart - 2, 1);
-            //            if (textBox.SelectionColor == Color.Red)
-            //            {
-            //                MessageBox.Show("1", ""); // находит удаление " ковычки
-            //            }
-            //        }
-                   
-            //    }
-            //    else if (textBox.SelectedText == "<" || textBox.SelectedText == ">")
-            //    {
-            //        if (textBox.SelectionColor==Color.Blue)
-            //        {
-
-            //        } 
-            //    }
-            //}
-        }
     }
 }
