@@ -135,7 +135,8 @@ namespace TextEditor
         {
             string dbPath = "Data Source=" + ConfigurationSettings.AppSettings["PathToDB"]; // путь к файлу базы данных
             using (SQLiteConnection conn = new SQLiteConnection(dbPath))
-            {   // Написание строки команды для передачи базе данных на выполнение
+            {   
+                // Написание строки команды для передачи базе данных на выполнение
                 string commandText = "CREATE TABLE IF NOT EXISTS [dbFilesStore] ( [id] INTEGER PRIMARY KEY AUTOINCREMENT " +
                     "NOT NULL, [file] BINARY, [file_format] VARCHAR(10), [file_name] NVARCHAR(128))";
                 SQLiteCommand Command = new SQLiteCommand(commandText, conn);

@@ -51,7 +51,7 @@ namespace TextEditor
 
         private void SaveFileToDBAsToolStripMenuItem_Click(object sender, EventArgs e) // учитывать возможность повторения имен файлов
         {
-            WorkWithSQlite.FileName = null; // Сохраняет файл с новым именем возможно проблема тут
+            WorkWithSQlite.FileName = null; // Сохраняет файл с новым именем
             if (fileNameFormatCheck())
             {
                 if (checkingDuplicateFiles())
@@ -76,7 +76,8 @@ namespace TextEditor
         {
             try
             {
-                Dictionary<string, string> _filesArray = WorkWithSQlite.findAllFilesInDB(); // записывает все файлы которые хранятся в базу данных
+                // записывает все файлы которые хранятся в базе данных
+                Dictionary<string, string> _filesArray = WorkWithSQlite.findAllFilesInDB(); 
                 foreach (var item in _filesArray)
                 {
                     if (item.Key == WorkWithSQlite.FileName) // Ищет повторения
@@ -85,7 +86,7 @@ namespace TextEditor
                         requestForm.ShowDialog();
                         if (requestForm.DialogResult == DialogResult.Cancel)
                         {
-                            WorkWithSQlite.FileName = null; // тут что то может быть?
+                            WorkWithSQlite.FileName = null;
                             return fileNameFormatCheck();
                         }
                         else if (requestForm.DialogResult == DialogResult.OK)
@@ -135,8 +136,8 @@ namespace TextEditor
                 OpenFileDialog fileDialog = new OpenFileDialog();
                 fileDialog.ShowDialog();
                 string _pathfile = fileDialog.FileName;
-                WorkWithSQlite.writeFileInfo(_pathfile);
-                WorkWithSQlite.uploadFileToDBAsync(_pathfile);
+                WorkWithSQlite.writeFileInfo(_pathfile); // Записывает формат и имя файла
+                WorkWithSQlite.uploadFileToDBAsync(_pathfile); // Загружает файл в базу данных
             }
             catch (ArgumentException ex)
             {
@@ -150,8 +151,8 @@ namespace TextEditor
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
-        } // Закрывает форму
+            this.Close(); // Закрывает форму
+        } 
 
         private void VievToolStripMenuItem_Click(object sender, EventArgs e) // Работает с форматом текста в textBox
         {
@@ -166,10 +167,12 @@ namespace TextEditor
             {
                 var currentSelStart = textBox.SelectionStart;
                 var currentSelLength = textBox.SelectionLength;
-                textBox.SelectAll();                                                         // Не является оптимальным решением
+                textBox.SelectAll();                              
                 textBox.SelectionColor = SystemColors.WindowText;
-                coloredText(Regex.Matches(textBox.Text, @"\<(\w+.?\w+)\>|<\/(\w+)[^>]*>"), Color.Blue); // Ищет теги и раскрашивает их
-                coloredText(Regex.Matches(textBox.Text, @"\" + '"' + @"(.*?)\" + '"'), Color.Red); // Ищет коментарии и раскрашивает их
+                // Ищет теги и раскрашивает их
+                coloredText(Regex.Matches(textBox.Text, @"\<(\w+.?\w+)\>|<\/(\w+)[^>]*>"), Color.Blue);
+                // Ищет коментарии и раскрашивает их
+                coloredText(Regex.Matches(textBox.Text, @"\" + '"' + @"(.*?)\" + '"'), Color.Red); 
 
                 textBox.Select(currentSelStart, currentSelLength);
                 textBox.SelectionColor = SystemColors.WindowText;
@@ -185,7 +188,8 @@ namespace TextEditor
             }
         }
 
-        private void AutoTabToolStripMenuItem_Click(object sender, EventArgs e) // Форматирует текст содержащий тэги формата xml
+        // Форматирует текст содержащий тэги формата xml и json
+        private void AutoTabToolStripMenuItem_Click(object sender, EventArgs e) 
         {
             if (WorkWithSQlite.FileFormat.ToUpper() == "XML")
             {
@@ -199,8 +203,8 @@ namespace TextEditor
             }
         }
 
-        // str - Строка в которой производится поиск, startTag - Шаблон открывающего элемента,
-        // endTag - Шаблон закрывающего элемента
+        /* str - Строка в которой производится поиск, startTag - Шаблон открывающего элемента,
+         endTag - Шаблон закрывающего элемента */
         private string[] autoTab(string[] str, string startTag, string endTag) // Выставляет знаки табуляции
         {
             int j = 0; // Счетчик необходимого кол-ва табуляций

@@ -15,7 +15,6 @@ namespace TextEditor
 
         private void FormSelectFile_Load(object sender, EventArgs e)
         {
-            //Dictionary<string, string> filesInDB = WorkWithSQlite.findAllFilesInDB();
             try { 
                 foreach (var item in filesInDB)
                 {
@@ -31,7 +30,6 @@ namespace TextEditor
 
         private void ButtonSelect_Click(object sender, EventArgs e)
         {
-            //Dictionary<string, string> filesInDB = WorkWithSQlite.findAllFilesInDB();
             if (!(listOfFiles.SelectedItem is null)) // проверка выбран файл или нет
             {
                 foreach (var item in filesInDB)
