@@ -181,45 +181,19 @@ namespace TextEditor
         {
             if (WorkWithSQlite.FileFormat.ToUpper() == "XML")
             {
-                textBox.Lines = autoTabXML(textBox.Lines); // Отправляет текст из textBox на форматирование
+                // Отправляет текст из textBox на форматирование по заданным шаблонам
+                textBox.Lines = autoTab(textBox.Lines, @"\<(\w+.?\w+)\>", @"<\/(\w+)[^>]*>"); 
             }
             if (WorkWithSQlite.FileFormat.ToUpper() == "JSON")
             {
-                textBox.Lines = autoTabJSON(textBox.Lines); // Отправляет текст из textBox на форматирование 
+                // Отправляет текст из textBox на форматирование по заданным шаблонам
+                textBox.Lines = autoTab(textBox.Lines, @"\{", @"\}"); 
             }
         }
 
-        private string[] autoTabJSON(string[] str)
-        {
-            int j = 0; // Счетчик необходимого кол-ва табуляций
-            var findTab = new Regex("\\t"); // Задание элемента для поиска
-            for (int i = 0; i < str.Length; i++)
-            {
-                str[i] = findTab.Replace(str[i], ""); // Обнуляет все табы
-            }
-            for (int i = 0; i < str.Length; i++)
-            {
-                var match = Regex.Match(str[i], @"\{"); // Ищет в строке совпадение по шаблону. Пример: <config> или <con.fig>
-                if (match.Success)
-                {
-                    str[i] = tabCount(str[i], j); // Если совпадение найдено ставит знак табуляции
-                    j++; // увеличивает уровень табуляции на 1
-                }
-                else
-                {
-                    str[i] = tabCount(str[i], j); //  Если совпадение не найдено уровень табуляции остается неизменным
-                }
-                match = Regex.Match(str[i], @"\}"); // Ищет в строке совпадение по шаблону. Пример: </config>
-                if (match.Success)
-                {
-                    str[i] = findTab.Replace(str[i], "", 1, 0); // Если есть совпадение то удаляет знак табуляции если таковой есть 
-                    j--; // уменьшает уровень табуляции на 1
-                }
-            }
-            return str;
-        }
-
-        private string[] autoTabXML(string[] str) // Выставляет знаки табуляции
+        // str - Строка в которой производится поиск, startTag - Шаблон открывающего элемента,
+        // endTag - Шаблон закрывающего элемента
+        private string[] autoTab(string[] str, string startTag, string endTag) // Выставляет знаки табуляции
         {
             int j = 0; // Счетчик необходимого кол-ва табуляций
             int inOneStr=-1; // Проверяет наличие открывающего и закрывающего тега в одной строке
@@ -231,7 +205,7 @@ namespace TextEditor
             }
             for (int i = 0; i < str.Length; i++)
             {
-                var match = Regex.Match(str[i], @"\<(\w+.?\w+)\>"); // Ищет в строке совпадение по шаблону. Пример: <config> или <con.fig>
+                var match = Regex.Match(str[i], startTag); // Ищет в строке совпадение по шаблону
                 if (match.Success)
                 {
                     str[i] = tabCount(str[i], j); // Если совпадение найдено ставит знак табуляции
@@ -242,7 +216,7 @@ namespace TextEditor
                 {
                     str[i] = tabCount(str[i], j); //  Если совпадение не найдено уровень табуляции остается неизменным
                 }
-                match = Regex.Match(str[i], @"<\/(\w+)[^>]*>"); // Ищет в строке совпадение по шаблону. Пример: </config>
+                match = Regex.Match(str[i], endTag); // Ищет в строке совпадение по шаблону
                 if (match.Success)
                 {
                     if (inOneStr != i) // Проверяет наличие открываюшего и закрываюшего тега в одной строке
