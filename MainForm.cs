@@ -37,7 +37,11 @@ namespace TextEditor
                 fileDialog.ShowDialog();
                 string _pathfile = fileDialog.FileName;
                 WorkWithSQlite.writeFileInfo(_pathfile);
-                textBox.Text = Encoding.UTF8.GetString(File.ReadAllBytes(_pathfile));                
+                textBox.Text = Encoding.UTF8.GetString(File.ReadAllBytes(_pathfile));
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("File not selected.", "Error!", MessageBoxButtons.OK);
             }
             catch (Exception ex)
             {
@@ -133,6 +137,10 @@ namespace TextEditor
                 string _pathfile = fileDialog.FileName;
                 WorkWithSQlite.writeFileInfo(_pathfile);
                 WorkWithSQlite.uploadFileToDBAsync(_pathfile);
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show("File not selected.", "Error!", MessageBoxButtons.OK);
             }
             catch (Exception ex)
             {
